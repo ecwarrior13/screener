@@ -11,7 +11,10 @@ import type {
 async function fmpRequest<T>(
     endpoint: string,
     symbol: string,
-    options?: { returnArray?: boolean }
+    options?: {
+        returnArray?: boolean;
+        query?: Record<string, string | number | boolean | undefined>;
+    }
 ): Promise<T | T[] | null> {
     const apiKey = process.env.FMP_API_KEY;
 
@@ -19,9 +22,19 @@ async function fmpRequest<T>(
         throw new Error("Missing FMP_API_KEY in .env.local");
     }
 
-    const url = `https://financialmodelingprep.com/stable/${endpoint}?symbol=${symbol}&apikey=${apiKey}`;
+    const url = new URL(`https://financialmodelingprep.com/stable/${endpoint}`);
+    url.searchParams.set("symbol", symbol);
+    url.searchParams.set("apikey", apiKey);
 
-    const response = await fetch(url, {
+    if (options?.query) {
+        for (const [key, value] of Object.entries(options.query)) {
+            if (value !== undefined) {
+                url.searchParams.set(key, String(value));
+            }
+        }
+    }
+
+    const response = await fetch(url.toString(), {
         method: "GET",
         cache: "no-store",
     });
@@ -38,7 +51,6 @@ async function fmpRequest<T>(
 
     return Array.isArray(data) ? ((data[0] ?? null) as T | null) : (data as T);
 }
-
 export function fetchFmpQuote(symbol: string): Promise<FmpQuote | null> {
     return fmpRequest<FmpQuote>("quote", symbol) as Promise<FmpQuote | null>;
 }
@@ -62,10 +74,12 @@ export function fetchFmpDividends(symbol: string): Promise<FmpDividend[]> {
 }
 
 export function fetchFmpIncomeStatement(
-    symbol: string
+    symbol: string,
+    limit = 10
 ): Promise<FmpIncomeStatement[]> {
     return fmpRequest<FmpIncomeStatement>("income-statement", symbol, {
         returnArray: true,
+        query: { limit },
     }) as Promise<FmpIncomeStatement[]>;
 }
 
