@@ -73,3 +73,33 @@ export type StockDetails = {
     incomeStatements: SavedIncomeStatement[];
 };
 
+export type ScreenerHistoricalRow = {
+    year: number;
+    revenue: number | null;
+    grossProfit: number | null;
+    netIncome: number | null;
+    eps: number | null;
+    grossProfitRatio: number | null;
+};
+
+export type ScreenerCurrentMetrics = {
+    revenue: number | null;
+    grossProfit: number | null;
+    netIncome: number | null;
+    eps: number | null;
+    fiveYearRevenueCagr: number | null;
+    tenYearRevenueCagr: number | null;
+    fiveYearNetIncomeCagr: number | null;
+    tenYearNetIncomeCagr: number | null;
+    lastYearGPR: number | null;
+    fiveYearAvgGPR: number | null;
+    tenYearAvgGPR: number | null;
+};
+
+export type ScreenerStockData = {
+    ticker: string;
+    companyName: string | null;
+    currentMetrics: ScreenerCurrentMetrics;
+    historicalData: ScreenerHistoricalRow[];
+};
+

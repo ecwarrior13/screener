@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
 interface TickerSearchProps {
-  onSearch: (ticker: string) => void;
+  onSearch: (ticker: string) => void | Promise<void>;
   isLoading: boolean;
 }
 
@@ -16,7 +16,7 @@ export function TickerSearch({ onSearch, isLoading }: TickerSearchProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (ticker.trim()) {
-      onSearch(ticker.trim());
+      void onSearch(ticker.trim());
     }
   };
 
@@ -53,7 +53,7 @@ export function TickerSearch({ onSearch, isLoading }: TickerSearchProps) {
             type="button"
             onClick={() => {
               setTicker(t);
-              onSearch(t);
+              void onSearch(t);
             }}
             disabled={isLoading}
             className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground hover:bg-accent transition-colors disabled:opacity-50"
