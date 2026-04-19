@@ -2,8 +2,13 @@ import type {
     FmpBalanceSheet,
     FmpCashFlowStatement,
     FmpDividend,
+    FmpEarnings,
+    FmpFinancialGrowth,
+    FmpFinancialScores,
     FmpIncomeStatement,
     FmpKeyMetrics,
+    FmpRatio,
+    FmpRatioTtm,
     FmpProfile,
     FmpQuote,
 } from "@/lib/fmp-types";
@@ -75,25 +80,81 @@ export function fetchFmpDividends(symbol: string): Promise<FmpDividend[]> {
 
 export function fetchFmpIncomeStatement(
     symbol: string,
-    limit = 10
+    options?: {
+        limit?: number;
+        period?: "annual" | "quarter";
+    }
 ): Promise<FmpIncomeStatement[]> {
+    const { limit = 10, period = "annual" } = options ?? {};
+
     return fmpRequest<FmpIncomeStatement>("income-statement", symbol, {
         returnArray: true,
-        query: { limit },
+        query: { limit, period },
     }) as Promise<FmpIncomeStatement[]>;
 }
 
 export function fetchFmpBalanceSheet(
-    symbol: string
+    symbol: string,
+    limit = 10
 ): Promise<FmpBalanceSheet[]> {
     return fmpRequest<FmpBalanceSheet>("balance-sheet-statement", symbol, {
         returnArray: true,
+        query: { limit },
     }) as Promise<FmpBalanceSheet[]>;
 }
 export function fetchFmpCashFlowStatement(
-    symbol: string
+    symbol: string,
+    options?: {
+        limit?: number;
+        period?: "annual" | "quarter";
+    }
 ): Promise<FmpCashFlowStatement[]> {
+    const { limit = 10, period = "annual" } = options ?? {};
+
     return fmpRequest<FmpCashFlowStatement>("cash-flow-statement", symbol, {
         returnArray: true,
+        query: { limit, period },
     }) as Promise<FmpCashFlowStatement[]>;
+}
+export function fetchFmpFinancialScores(
+    symbol: string
+): Promise<FmpFinancialScores | null> {
+    return fmpRequest<FmpFinancialScores>("financial-scores", symbol) as Promise<
+        FmpFinancialScores | null
+    >;
+}
+export function fetchFmpFinancialGrowth(
+    symbol: string,
+    limit = 10
+): Promise<FmpFinancialGrowth[]> {
+    return fmpRequest<FmpFinancialGrowth>("financial-growth", symbol, {
+        returnArray: true,
+        query: { limit },
+    }) as Promise<FmpFinancialGrowth[]>;
+}
+export function fetchFmpEarnings(
+    symbol: string,
+    limit = 10
+): Promise<FmpEarnings[]> {
+    return fmpRequest<FmpEarnings>("earnings", symbol, {
+        returnArray: true,
+        query: { limit },
+    }) as Promise<FmpEarnings[]>;
+}
+export function fetchFmpRatios(
+    symbol: string,
+    limit = 10
+): Promise<FmpRatio[]> {
+    return fmpRequest<FmpRatio>("ratios", symbol, {
+        returnArray: true,
+        query: { limit },
+    }) as Promise<FmpRatio[]>;
+}
+
+export function fetchFmpRatiosTtm(
+    symbol: string
+): Promise<FmpRatioTtm | null> {
+    return fmpRequest<FmpRatioTtm>("ratios-ttm", symbol) as Promise<
+        FmpRatioTtm | null
+    >;
 }

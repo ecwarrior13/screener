@@ -66,6 +66,75 @@ export type FmpCashFlowStatement = {
     operatingCashFlow?: number;
     capitalExpenditure?: number;
     freeCashFlow?: number;
-    dividendsPaid?: number;
+    commonDividendsPaid?: number;
     netIncome?: number;
+};
+export type FmpFinancialScores = {
+    symbol?: string;
+    date?: string;
+    altmanZScore?: number;
+    piotroskiScore?: number;
+    workingCapital?: number;
+    totalAssets?: number;
+    retainedEarnings?: number;
+    ebit?: number;
+    marketCap?: number;
+    liabilities?: number;
+    revenue?: number;
+};
+export type FmpFinancialGrowth = {
+    symbol?: string;
+    date?: string;
+    fiscalYear?: string;
+    period?: string;
+    growthRevenue?: number;
+    growthNetIncome?: number;
+    growthEPS?: number;
+    growthOperatingCashFlow?: number;
+    growthFreeCashFlow?: number;
+    growthTotalAssets?: number;
+    growthTotalLiabilities?: number;
+    growthTotalEquity?: number;
+};
+export type FmpEarnings = {
+    symbol?: string;
+    date?: string;
+    period?: string;
+    eps?: number;
+    estimatedEps?: number;
+    revenue?: number;
+    estimatedRevenue?: number;
+    fiscalDateEnding?: string;
+    updatedFromDate?: string;
+};
+export type FmpRatio = {
+    symbol?: string;
+    date?: string;
+    fiscalYear?: string;
+    period?: string;
+    grossProfitMargin?: number;
+    operatingProfitMargin?: number;
+    netProfitMargin?: number;
+    currentRatio?: number;
+    quickRatio?: number;
+    debtEquityRatio?: number;
+    returnOnEquity?: number;
+    returnOnAssets?: number;
+    priceEarningsRatio?: number;
+    priceToBookRatio?: number;
+};
+
+export type FmpRatioTtm = {
+    symbol?: string;
+    date?: string;
+    grossProfitMarginTTM?: number;
+    operatingProfitMarginTTM?: number;
+    netProfitMarginTTM?: number;
+    currentRatioTTM?: number;
+    quickRatioTTM?: number;
+    debtToEquityRatioTTM?: number;
+    returnOnEquityTTM?: number;
+    returnOnAssetsTTM?: number;
+    priceToEarningsRatioTTM?: number;
+    priceToBookRatioTTM?: number;
 };

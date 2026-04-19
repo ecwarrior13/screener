@@ -2,7 +2,12 @@ import {
     fetchFmpBalanceSheet,
     fetchFmpCashFlowStatement,
     fetchFmpDividends,
+    fetchFmpEarnings,
     fetchFmpIncomeStatement,
+    fetchFmpFinancialGrowth,
+    fetchFmpRatios,
+    fetchFmpRatiosTtm,
+    fetchFmpFinancialScores,
     fetchFmpKeyMetrics,
     fetchFmpProfile,
     fetchFmpQuote,
@@ -10,6 +15,11 @@ import {
 import {
     saveBalanceSheets,
     saveCashFlowStatements,
+    saveEarnings,
+    saveFinancialScores,
+    saveFinancialGrowth,
+    saveRatios,
+    saveRatiosTtm,
     saveDividends,
     saveIncomeStatements,
     saveKeyMetrics,
@@ -28,19 +38,42 @@ export async function syncStockBySymbol(inputSymbol: string) {
         quote,
         profile,
         keyMetrics,
+        financialScores,
+        financialGrowth,
+        earnings,
         dividends,
-        incomeStatements,
+        annualIncomeStatements,
+        quarterlyIncomeStatements,
         balanceSheets,
-        cashFlowStatements,
+        annualCashFlowStatements,
+        quarterlyCashFlowStatements,
+        ratios,
+        ratiosTtm,
     ] = await Promise.all([
         fetchFmpQuote(symbol),
         fetchFmpProfile(symbol),
         fetchFmpKeyMetrics(symbol),
+        fetchFmpFinancialScores(symbol),
+        fetchFmpFinancialGrowth(symbol),
+        fetchFmpEarnings(symbol),
         fetchFmpDividends(symbol),
-        fetchFmpIncomeStatement(symbol),
+        fetchFmpIncomeStatement(symbol, { period: "annual", limit: 15 }),
+        fetchFmpIncomeStatement(symbol, { period: "quarter", limit: 20 }),
         fetchFmpBalanceSheet(symbol),
-        fetchFmpCashFlowStatement(symbol),
+        fetchFmpCashFlowStatement(symbol, { period: "annual", limit: 15 }),
+        fetchFmpCashFlowStatement(symbol, { period: "quarter", limit: 20 }),
+        fetchFmpRatios(symbol),
+        fetchFmpRatiosTtm(symbol),
     ]);
+
+    const cashFlowStatements = [
+        ...annualCashFlowStatements,
+        ...quarterlyCashFlowStatements,
+    ];
+    const incomeStatements = [
+        ...annualIncomeStatements,
+        ...quarterlyIncomeStatements,
+    ];
 
     if (!quote) {
         throw new Error(`No quote data found for symbol ${symbol}`);
@@ -54,6 +87,18 @@ export async function syncStockBySymbol(inputSymbol: string) {
 
     if (keyMetrics) {
         await saveKeyMetrics(symbol, keyMetrics);
+    }
+
+    if (financialScores) {
+        await saveFinancialScores(symbol, financialScores);
+    }
+
+    if (financialGrowth.length) {
+        await saveFinancialGrowth(symbol, financialGrowth);
+    }
+
+    if (earnings.length) {
+        await saveEarnings(symbol, earnings);
     }
 
     if (dividends.length) {
@@ -71,15 +116,27 @@ export async function syncStockBySymbol(inputSymbol: string) {
     if (cashFlowStatements.length) {
         await saveCashFlowStatements(symbol, cashFlowStatements);
     }
+    if (ratios.length) {
+        await saveRatios(symbol, ratios);
+    }
+
+    if (ratiosTtm) {
+        await saveRatiosTtm(symbol, ratiosTtm);
+    }
 
     return {
         symbol,
         quote,
         profile,
         keyMetrics,
+        financialScores,
+        financialGrowth,
+        earnings,
         dividends,
         incomeStatements,
         balanceSheets,
         cashFlowStatements,
+        ratios,
+        ratiosTtm,
     };
 }

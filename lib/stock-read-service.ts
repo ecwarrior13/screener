@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase-server";
+import { getCashFlowStatementsBySymbol } from "@/lib/stock-cash-flow-statements-service";
 import { getDividendsBySymbol } from "@/lib/stock-dividends-service";
 import { getIncomeStatementsBySymbol } from "@/lib/stock-income-statements-service";
 
@@ -15,6 +16,7 @@ export async function getStockDetailsBySymbol(inputSymbol: string) {
         keyMetricsResult,
         dividends,
         incomeStatements,
+        cashFlowStatements,
     ] = await Promise.all([
         supabaseAdmin
             .from("fmprep_quotes")
@@ -36,6 +38,7 @@ export async function getStockDetailsBySymbol(inputSymbol: string) {
 
         getDividendsBySymbol(symbol),
         getIncomeStatementsBySymbol(symbol),
+        getCashFlowStatementsBySymbol(symbol),
     ]);
 
     if (quoteResult.error) {
@@ -63,5 +66,6 @@ export async function getStockDetailsBySymbol(inputSymbol: string) {
         keyMetrics: keyMetricsResult.data,
         dividends,
         incomeStatements,
+        cashFlowStatements,
     };
 }
