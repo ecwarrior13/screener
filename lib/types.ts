@@ -80,16 +80,6 @@ export type SavedCashFlowStatement = {
     created_at: string;
     updated_at: string;
 };
-export type StockDetails = {
-    symbol: string;
-    quote: SavedQuote | null;
-    profile: SavedProfile | null;
-    keyMetrics: SavedKeyMetrics | null;
-    dividends: SavedDividend[];
-    incomeStatements: SavedIncomeStatement[];
-    cashFlowStatements: SavedCashFlowStatement[];
-};
-
 export type ScreenerHistoricalRow = {
     year: number;
     revenue: number | null;
@@ -149,4 +139,113 @@ export type DividendStockData = {
     currentMetrics: DividendCurrentMetrics;
     history: DividendHistoricalRow[];
 };
+export type SavedFinancialScores = {
+    id: number;
+    symbol: string;
+    score_date: string | null;
+    altman_z_score: number | null;
+    piotroski_score: number | null;
+    working_capital: number | null;
+    total_assets: number | null;
+    retained_earnings: number | null;
+    ebit: number | null;
+    market_cap: number | null;
+    liabilities: number | null;
+    revenue: number | null;
+    raw_json: unknown;
+    fetched_at: string;
+    created_at: string;
+    updated_at: string;
+};
 
+export type SavedRatioTtm = {
+    id: number;
+    symbol: string;
+    ratio_date: string | null;
+    gross_profit_margin: number | null;
+    operating_profit_margin: number | null;
+    net_profit_margin: number | null;
+    current_ratio: number | null;
+    quick_ratio: number | null;
+    debt_to_equity: number | null;
+    return_on_equity: number | null;
+    return_on_assets: number | null;
+    price_to_earnings_ratio: number | null;
+    price_to_book_ratio: number | null;
+    raw_json: unknown;
+    fetched_at: string;
+    created_at: string;
+    updated_at: string;
+};
+export type SavedFinancialGrowth = {
+    id: number;
+    symbol: string;
+    growth_date: string;
+    period: string | null;
+    fiscal_year: string | null;
+    growth_revenue: number | null;
+    growth_net_income: number | null;
+    growth_eps: number | null;
+    growth_operating_cash_flow: number | null;
+    growth_free_cash_flow: number | null;
+    growth_total_assets: number | null;
+    growth_total_liabilities: number | null;
+    growth_total_equity: number | null;
+    raw_json: unknown;
+    fetched_at: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type SavedEarnings = {
+    id: number;
+    symbol: string;
+    earnings_date: string;
+    period: string | null;
+    eps: number | null;
+    eps_estimated: number | null;
+    revenue: number | null;
+    revenue_estimated: number | null;
+    fiscal_date_ending: string | null;
+    updated_from_date: string | null;
+    raw_json: unknown;
+    fetched_at: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type SavedRatio = {
+    id: number;
+    symbol: string;
+    ratio_date: string;
+    period: string | null;
+    fiscal_year: string | null;
+    gross_profit_margin: number | null;
+    operating_profit_margin: number | null;
+    net_profit_margin: number | null;
+    current_ratio: number | null;
+    quick_ratio: number | null;
+    debt_to_equity: number | null;
+    return_on_equity: number | null;
+    return_on_assets: number | null;
+    price_to_earnings_ratio: number | null;
+    price_to_book_ratio: number | null;
+    raw_json: unknown;
+    fetched_at: string;
+    created_at: string;
+    updated_at: string;
+};
+export type StockDetails = {
+    symbol: string;
+    quote: SavedQuote | null;
+    profile: SavedProfile | null;
+    keyMetrics: SavedKeyMetrics | null;
+    dividends: SavedDividend[];
+    incomeStatements: SavedIncomeStatement[];
+    cashFlowStatements: SavedCashFlowStatement[];
+    financialScores: SavedFinancialScores | null;
+    ratiosTtm: SavedRatioTtm | null;
+    financialGrowth: SavedFinancialGrowth[];
+    earnings: SavedEarnings[];
+    ratios: SavedRatio[];
+};
