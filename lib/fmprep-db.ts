@@ -14,6 +14,15 @@ import type {
     FmpQuote,
 } from "@/lib/fmp-types";
 
+function toFiniteNumber(value: number | null | undefined) {
+    return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function toIntegerNumber(value: number | null | undefined) {
+    const normalized = toFiniteNumber(value);
+    return normalized === null ? null : Math.trunc(normalized);
+}
+
 export async function saveQuote(symbol: string, quote: FmpQuote) {
     const { error } = await supabaseAdmin
         .from("fmprep_quotes")
@@ -21,9 +30,9 @@ export async function saveQuote(symbol: string, quote: FmpQuote) {
             {
                 symbol,
                 name: quote.name ?? null,
-                price: quote.price ?? null,
-                change: quote.change ?? null,
-                volume: quote.volume ?? null,
+                price: toFiniteNumber(quote.price),
+                change: toFiniteNumber(quote.change),
+                volume: toIntegerNumber(quote.volume),
                 raw_json: quote,
                 fetched_at: new Date().toISOString(),
             },

@@ -293,7 +293,7 @@ export default function HomePage() {
                 <div className="space-y-2 text-sm">
                   {selectedDetails.dividends.slice(0, 5).map((item) => (
                     <div
-                      key={`${item.symbol}-${item.dividend_date}`}
+                      key={item.id}
                       className="flex items-center justify-between border-b pb-1 last:border-b-0"
                     >
                       <span>{item.dividend_date}</span>

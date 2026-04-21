@@ -18,14 +18,14 @@ export async function getStockDetailsBySymbol(inputSymbol: string) {
         quoteResult,
         profileResult,
         keyMetricsResult,
+        dividends,
+        incomeStatements,
+        cashFlowStatements,
         financialScores,
         ratiosTtm,
-        dividends,
-        cashFlowStatements,
-        incomeStatements,
-        ratios,
         financialGrowth,
         earnings,
+        ratios,
     ] = await Promise.all([
         supabaseAdmin
             .from("fmprep_quotes")
